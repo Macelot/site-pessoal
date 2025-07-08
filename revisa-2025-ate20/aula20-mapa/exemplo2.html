@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Add Map</title>
+
+    <style type="text/css">
+      /* Set the size of the div element that contains the map */
+      #map {
+        height: 400px;
+        /* The height is 400 pixels */
+        width: 100%;
+        /* The width is the width of the web page */
+      }
+    </style>
+    <script>
+        
+      // Initialize and add the map
+      function initMap() {
+          
+        // The location of Uluru
+        const uluru = { lat: -29.638098, lng: -51.008772 };
+        // The map, centered at Uluru
+
+ 
+
+
+
+        const map = new google.maps.Map(document.getElementById("map"), {
+          zoom: 15,
+          center: uluru,
+        });
+        google.maps.event.addListener(map, 'click', function(event) {
+   placeMarker(event.latLng);
+});
+
+
+function placeMarker(location) {
+    var marker = new google.maps.Marker({
+        position: location, 
+        map: map,
+        draggable:true
+
+    });
+    console.log(location.lat());
+    document.getElementById("Endereco").value=location.lat();
+    
+	
+	var conteudo=document.getElementById("pontos");
+    var input = document.createElement("input");
+	input.type = "text";
+	input.name = "member"+location.lat();
+	input.id = "member"+location.lat();
+	input.value = location.lat()+";"+location.lng();
+	conteudo.appendChild(input);
+
+    google.maps.event.addListener(marker, 'rightclick', function(event) {
+        console.log(marker.getPosition().lat());
+        var element = document.getElementById("pontos");
+		var child=document.getElementById("member"+marker.getPosition().lat());
+		element.removeChild(child);
+        marker.setMap(null);
+        
+    });
+
+}
+
+    
+        
+      }
+    </script>
+  </head>
+  <body>
+    <h3>My Google Maps Demo</h3>
+    <!--The div element for the map -->
+    <div id="map"></div>
+<form>
+    <input type="text" id="Endereco">
+    <div id="pontos"></div>
+</form>
+    <!-- Async script executes immediately and must be after any DOM elements used in callback. -->
+    <script
+      src="https://maps.googleapis.com/maps/api/js?key=&callback=initMap&libraries=&v=weekly"
+      async
+    ></script>
+  </body>
+</html>

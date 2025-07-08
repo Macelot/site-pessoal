@@ -1,0 +1,186 @@
+<html>
+<head>
+	<!-- tag para colocar os dados de configuração isto é tags meta, css, js, ...-->
+	<meta charset="utf-8">
+</head>
+<script language="JavaScript">
+	var operators = ["+", "-", "*", "/"];
+
+	function soma(n1,n2){
+		return n1+n2;
+	}
+	function backSpace(){
+		let conteudoAtual = document.getElementById('display').value; //pegamos o valor atual
+		document.getElementById('display').value = conteudoAtual.substring(0,conteudoAtual.length-1); //vamos tirar o ultimo 
+		//o substring recebe 3 parametros
+		// "feevale".substring(0,3); fee
+		// "feevale".substring(0,6); feeval
+		// 9=="9" true
+		// 9=='9' true
+		// 9==9 true
+		// 9==="9" false
+		// 9==='9' false
+		// 9===9 true
+	}
+
+	function insert(n){
+		let conteudoAtual = document.getElementById('display').value; //pegamos o valor antigo e concatenamos com o clicado
+		document.getElementById('display').value = conteudoAtual + n; //no n temos o valor clicado
+	}
+	
+	function insert_(n){
+		let conteudoAtual = document.getElementById('display').value; //pegamos o valor antigo e concatenamos com o clicado
+		var lastChar = conteudoAtual.substring(conteudoAtual.length-1,conteudoAtual.length);
+		console.log("->"+lastChar);
+		if ((operators.indexOf(lastChar) != -1) && (operators.indexOf(n) != -1)){
+			conteudoAtual = conteudoAtual.substring(0,conteudoAtual.length-1);
+			console.log("ENTROU");
+		}
+		document.getElementById('display').value = conteudoAtual + n; //no n temos o valor clicado
+	}
+	function calcular(){
+		let conteudoAtual = document.getElementById('display').value; 
+		document.getElementById('display').value = eval(conteudoAtual);
+	}
+	function limpaTudo(){
+		document.getElementById('display').value = "";
+	}
+	function limpaUltimo(){
+		document.getElementById('display').value = "";
+	}
+	function inverte(tam){
+		let conteudoAtual = document.getElementById('display').value;
+		console.log(conteudoAtual.substring(0,1));
+		if(conteudoAtual.substring(0,1)=="-"){
+			document.getElementById('display').value = conteudoAtual.substring(1,tam);
+		}else{
+			document.getElementById('display').value = "-"+document.getElementById('display').value;
+		}	
+	}
+	function raiz(){
+		let result = Math.sqrt(document.getElementById('display').value);
+		document.getElementById('display').value = result;
+	}
+	function elevado(){
+		let result = Math.pow(document.getElementById('display').value,2);
+		document.getElementById('display').value = result;
+	}
+	function sobx(){
+		let result = 1/document.getElementById('display').value;
+		document.getElementById('display').value = result;
+	}
+	function insertPonto(){
+		let conteudoAtual = document.getElementById('display').value;
+		if(conteudoAtual.includes(".")){
+			return;
+		}else{
+			document.getElementById('display').value = document.getElementById('display').value+"."
+		}
+	}
+	function percentual(){
+		let valor = document.getElementById('display').value;
+		console.log(valor);
+		if (valor.includes("+")){
+			valores = valor.split("+");
+			let percent = valores[0]*valores[1]/100;
+			let resultado = eval(valores[0])+percent;
+			document.getElementById('display').value=resultado;
+		}
+		if(valor.includes("-")){
+			valores = valor.split("-");
+			let percent = valores[0]*valores[1]/100;
+			let resultado = eval(valores[0])-percent;
+			document.getElementById('display').value=resultado;
+		}
+		if(valor.includes("/")){
+			valores = valor.split("/");
+			let percent = valores[0]*valores[1]/100;
+			let resultado = eval(valores[0])/percent;
+			document.getElementById('display').value=resultado;
+		}
+		if(valor.includes("*")){
+			valores = valor.split("*");
+			let percent = valores[0]*valores[1]/100;
+			let resultado = eval(valores[0])*percent;
+			document.getElementById('display').value=resultado;
+		}	
+	}
+	function limpaUltimo(){
+		let valor = document.getElementById('display').value;
+		console.log(valor);
+		if (valor.includes("+")){
+			valores = valor.split("+");
+			document.getElementById('display').value=valores[0]+"+";
+		}
+		if(valor.includes("-")){
+			valores = valor.split("-");
+			document.getElementById('display').value=valores[0]+"-";
+		}
+		if(valor.includes("/")){
+			valores = valor.split("/");
+			document.getElementById('display').value=valores[0]+"/";
+		}
+		if(valor.includes("*")){
+			valores = valor.split("*");
+			document.getElementById('display').value=valores[0]+"*";
+		}	
+	}
+	
+	
+</script>
+<body>
+	<input type="text" id="display" size="10">
+	<table>
+		<tr>
+		<td><input type="button" value="%" onclick="percentual()"></td>
+		<td><input type="button" value="CE" onclick="limpaUltimo()"></td>
+		<td><input type="button" value="C" onclick="limpaTudo()"></td>
+		<td><input type="button" value="<" onclick="backSpace()"></td>
+	</tr>
+	<tr>
+		<td><input type="button" value="⅟" onclick="sobx()"></td>
+		<td><input type="button" value="x²" onclick="elevado()"></td>
+		<td><input type="button" value="&#8730;" onclick="raiz()"></td>
+		<td><input type="button" value="/" onclick="insert(this.value)"></td>
+	</tr>
+	<tr>
+		<td><input type="button" value="7" onclick="insert(this.value)"></td>
+		<td><input type="button" value="8" onclick="insert(this.value)"></td>
+		<td><input type="button" value="9" onclick="insert(this.value)"></td>
+		<td><input type="button" value="*" onclick="insert(this.value)"></td>
+	</tr>
+	<tr>
+		<td><input type="button" value="4" onclick="insert(this.value)"></td>
+		<td><input type="button" value="5" onclick="insert(this.value)"></td>
+		<td><input type="button" value="6" onclick="insert(this.value)"></td>
+		<td><input type="button" value="-" onclick="insert(this.value)"></td>
+	</tr>
+	<tr>
+		<td><input type="button" value="1" onclick="insert(this.value)"></td>
+		<td><input type="button" value="2" onclick="insert(this.value)"></td>
+		<td><input type="button" value="3" onclick="insert(this.value)"></td>
+		<td><input type="button" value="+" onclick="insert(this.value)"></td>
+	</tr>
+		<tr>
+		<td><input type="button" value="+/-" onclick="inverte(document.getElementById('display').value.length)"></td>
+		<td><input type="button" value="0" onclick="insert(this.value)"></td>
+		<td><input type="button" value="," onclick="insertPonto()"></td>
+		<td><input type="button" value="=" onclick="calcular()"></td>
+	</tr>
+</body>
+</html>
+
+
+<input type="button" value="1" onclick="">
+<input type="button" value="2" onclick="">
+<input type="button" value="3" onclick="">
+<input type="button" value="+" onclick="">
+
+
+<table>
+	<tr>
+		<td><input type="button" value="%" onclick=""></td>
+		<td><input type="button" value="CE" onclick=""></td>
+		<td><input type="button" value="C" onclick=""></td>
+		<td><input type="button" value="<" onclick=""></td>
+	</tr>

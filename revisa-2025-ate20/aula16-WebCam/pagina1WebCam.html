@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Webcam com JavaScript</title>
+</head>
+<body>
+  <h1>Minha Webcam</h1>
+  <video id="video" width="640" height="480" autoplay></video>
+  <script>
+    const video = document.getElementById('video');
+
+    // Solicita acesso à câmera
+    navigator.mediaDevices.getUserMedia({ video: true })
+      .then((stream) => {
+        video.srcObject = stream;
+      })
+      .catch((err) => {
+        console.error('Erro ao acessar a webcam:', err);
+      });
+  </script>
+</body>
+</html>

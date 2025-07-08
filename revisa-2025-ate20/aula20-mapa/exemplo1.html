@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mapa Interativo - Novo Hamburgo</title>
+
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.css" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.js"></script>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-top: 20px;
+        }
+        .container {
+            display: flex;
+            flex-grow: 1;
+            padding: 20px;
+            gap: 20px;
+        }
+        #map {
+            flex: 2; /* Ocupa 2/3 do espaço */
+            height: 600px; /* Altura fixa para o mapa */
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        #info-panel {
+            flex: 1; /* Ocupa 1/3 do espaço */
+            background-color: #f9f9f9;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            overflow-y: auto; /* Permite scroll se a lista for muito longa */
+        }
+        #info-panel h2 {
+            margin-top: 0;
+            color: #555;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 10px;
+            margin-bottom: 15px;
+        }
+        #clicked-locations-list {
+            list-style: none;
+            padding: 0;
+        }
+        #clicked-locations-list li {
+            background-color: #fff;
+            margin-bottom: 10px;
+            padding: 10px 15px;
+            border-radius: 5px;
+            border: 1px solid #eee;
+            transition: background-color 0.3s ease;
+        }
+        #clicked-locations-list li:hover {
+            background-color: #f0f0f0;
+        }
+        #clicked-locations-list li strong {
+            color: #007bff;
+        }
+        .custom-popup-content textarea {
+            width: 100%;
+            min-height: 80px;
+            margin-top: 5px;
+            padding: 5px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-family: Arial, sans-serif;
+            resize: vertical;
+        }
+        .custom-popup-content button {
+            margin-top: 10px;
+            padding: 8px 15px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .custom-popup-content button:hover {
+            background-color: #218838;
+        }
+    </style>
+</head>
+<body>
+    <h1>Mapa Interativo: Clique para Marcar Locais em Novo Hamburgo</h1>
+
+    <div class="container">
+        <div id="map"></div>
+        <div id="info-panel">
+            <h2>Locais Clicados</h2>
+            <ul id="clicked-locations-list">
+                </ul>
+        </div>
+    </div>
+
+    <script>
+        // 1. Inicializar o Mapa Leaflet
+        // Centrado em Novo Hamburgo, RS
+        const map = L.map('map').setView([-29.689, -51.127], 13);
+
+        // Adicionar camada de tiles do OpenStreetMap
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map);
+
+        // Array de cores para os marcadores
+        const markerColors = [
+            '#FF6347', // Tomato
+            '#6A5ACD', // SlateBlue
+            '#3CB371', // MediumSeaGreen
+            '#FFD700', // Gold
+            '#8A2BE2', // BlueViolet
+            '#1E90FF', // DodgerBlue
+            '#FF4500', // OrangeRed
+            '#DA70D6', // Orchid
+            '#00CED1', // DarkTurquoise
+            '#A52A2A'  // Brown
+        ];
+        let colorIndex = 0; // Índice para alternar as cores
+
+        // Lista para armazenar os detalhes dos cliques
+        const clickedLocations = [];
+        const clickedLocationsList = document.getElementById('clicked-locations-list');
+
+        // 2. Função para Geocodificação Reversa (busca endereço a partir de Lat/Lon)
+        // Usando a API Nominatim do OpenStreetMap (uso justo, não abusivo)
+        async function reverseGeocode(lat, lon) {
+            const url = `https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${lat}&lon=${lon}`;
+            try {
+                const response = await fetch(url);
+                const data = await response.json();
+                return {
+                    street: data.address.road || 'N/A',
+                    neighbourhood: data.address.suburb || data.address.neighbourhood || 'N/A',
+                    city: data.address.city || data.address.town || data.address.village || 'N/A',
+                    state: data.address.state || 'N/A',
+                    country: data.address.country || 'N/A'
+                };
+            } catch (error) {
+                console.error("Erro na geocodificação reversa:", error);
+                return { street: 'Erro', neighbourhood: 'Erro', city: 'Erro', state: 'Erro', country: 'Erro' };
+            }
+        }
+
+        // 3. Função para adicionar um marcador ao clicar no mapa
+        // map.on('click', async function(e) {
+        //     const lat = e.latlng.lat;
+        //     const lon = e.latlng.lng;
+        //     const currentColor = markerColors[colorIndex];
+
+        //     // Geocodificação reversa
+        //     const locationDetails = await reverseGeocode(lat, lon);
+
+        //     // Conteúdo do Popup (com textarea para escrever)
+        //     const popupContent = L.DomUtil.create('div', 'custom-popup-content');
+        //     popupContent.innerHTML = `
+        //         <p><strong>Lat:</strong> ${lat.toFixed(4)}<br>
+        //         <strong>Lon:</strong> ${lon.toFixed(4)}</p>
+        //         <p><strong>Rua:</strong> ${locationDetails.street}<br>
+        //         <strong>Bairro:</strong> ${locationDetails.neighbourhood}<br>
+        //         <strong>Cidade:</strong> ${locationDetails.city}</p>
+        //         <p>Escreva algo aqui:</p>
+        //         <textarea id="marker-notes-${lat.toFixed(4)}-${lon.toFixed(4)}"></textarea>
+        //         <button onclick="alert('Texto salvo (apenas para demonstração, não persistente)!')">Salvar Nota</button>
+        //     `;
+
+        //     // Crie um ícone personalizado para a cor
+        //     const customIcon = L.divIcon({
+        //         className: 'custom-div-icon',
+        //         html: `<div style="background-color: ${currentColor}; width: 20px; height: 20px; border-radius: 50%; border: 2px solid white; box-shadow: 0 0 5px rgba(0,0,0,0.5);"></div>`,
+        //         iconSize: [20, 20],
+        //         iconAnchor: [10, 10], // Centraliza o ícone no ponto
+        //         popupAnchor: [0, -10] // Ajusta a posição do popup
+        //     });
+
+        //     // Adiciona o marcador com o ícone colorido
+        //     const marker = L.marker([lat, lon], {icon: customIcon}).addTo(map);
+        //     marker.bindPopup(popupContent).openPopup();
+
+        //     // Adiciona o local clicado à lista na interface
+        //     clickedLocations.push({
+        //         lat: lat,
+        //         lon: lon,
+        //         street: locationDetails.street,
+        //         neighbourhood: locationDetails.neighbourhood,
+        //         color: currentColor,
+        //         marker: marker // Referência ao marcador no mapa
+        //     });
+        //     updateClickedLocationsList();
+
+        //     // Atualiza o índice de cores para o próximo clique
+        //     colorIndex = (colorIndex + 1) % markerColors.length;
+        // });
+
+        let drawControl;
+let currentDrawnLayer = null;
+
+//let drawnItems = new L.FeatureGroup().addTo(map);
+const drawnItems = new L.FeatureGroup();
+map.addLayer(drawnItems);
+map.on('click', async function(e) {
+    const lat = e.latlng.lat;
+    const lon = e.latlng.lng;
+    const currentColor = markerColors[colorIndex];
+
+    // Adiciona o marcador
+    const marker = L.marker([lat, lon], {
+         draggable: true,
+        icon: L.divIcon({
+            className: 'custom-div-icon',
+            html: `<div style="background-color: ${currentColor}; width: 20px; height: 20px; border-radius: 50%; border: 2px solid white; box-shadow: 0 0 5px rgba(0,0,0,0.5);"></div>`,
+            iconSize: [20, 20],
+            iconAnchor: [10, 10],
+            popupAnchor: [0, -10]
+        })
+    }).addTo(map);
+
+    const markerId = `nota-${Date.now()}`;
+
+marker.bindPopup(`
+  <p><strong>Lat:</strong> ${lat.toFixed(4)}<br><strong>Lon:</strong> ${lon.toFixed(4)}</p>
+  <textarea id="${markerId}" placeholder="Escreva algo..."></textarea><br>
+  <button onclick="salvarNota('${markerId}', ${clickedLocations.length})">Salvar Nota</button>
+`).openPopup();
+
+
+    // Gera um polígono simples (em volta do marcador)
+    const offset = 0.001;
+    const polygonPoints = [
+        [lat + offset, lon + offset],
+        [lat + offset, lon - offset],
+        [lat - offset, lon - offset],
+        [lat - offset, lon + offset]
+    ];
+
+    const polygon = L.polygon(polygonPoints, {
+        color: currentColor,
+        fillOpacity: 0.2,
+    }).addTo(drawnItems);
+    // Ativa edição imediatamente após criar
+polygon.editing.enable();
+
+
+// Vincular o polígono ao marcador para movimentação
+let lastLatLng = marker.getLatLng();
+
+marker.on('dragstart', function () {
+  lastLatLng = marker.getLatLng();
+});
+
+marker.on('drag', function () {
+  const newLatLng = marker.getLatLng();
+  const deltaLat = newLatLng.lat - lastLatLng.lat;
+  const deltaLng = newLatLng.lng - lastLatLng.lng;
+
+  // Atualiza as coordenadas do polígono
+  const newCoords = polygon.getLatLngs()[0].map(coord => {
+    return L.latLng(coord.lat + deltaLat, coord.lng + deltaLng);
+  });
+
+  polygon.setLatLngs([newCoords]);
+  polygon.redraw();
+
+  // Reativa edição explicitamente após atualizar os pontos
+  polygon.editing.enable();
+
+  lastLatLng = newLatLng;
+});
+
+
+
+    // Ativa edição imediata no polígono
+    polygon.enableEdit?.() || polygon.editing.enable();
+
+    // Geocodificação reversa
+    const locationDetails = await reverseGeocode(lat, lon);
+
+    clickedLocations.push({ lat, lon, color: currentColor, marker });
+    updateClickedLocationsList();
+
+    colorIndex = (colorIndex + 1) % markerColors.length;
+});
+
+// Quando o desenho for finalizado
+map.on(L.Draw.Event.CREATED, function (e) {
+    const layer = e.layer;
+    currentDrawnLayer = layer;
+    layer.addTo(map);
+    map.removeControl(drawControl);
+    drawControl = null;
+    colorIndex = (colorIndex + 1) % markerColors.length;
+});
+
+
+        // 4. Função para atualizar a lista de locais clicados na interface
+        function updateClickedLocationsList() {
+  clickedLocationsList.innerHTML = '';
+  clickedLocations.forEach((loc, index) => {
+    console.log(loc);
+    const listItem = document.createElement('li');
+    listItem.innerHTML = `
+      <p style="color: ${loc.color}; font-size: 30px;">●</p>
+      <strong>Local ${index + 1}:</strong><br>
+      Lat: ${loc.lat.toFixed(4)}, Lon: ${loc.lon.toFixed(4)}<br>
+      Rua: <input type='text'><br>
+      Bairro: <input type='text'><br>
+      <em>${loc.nota || ''}</em>
+    `;
+    listItem.addEventListener('click', () => {
+      map.setView([loc.lat, loc.lon], 15);
+      loc.marker.openPopup();
+    });
+    clickedLocationsList.appendChild(listItem);
+  });
+}
+
+
+        // --- Considerações sobre "Contorno de Bairro" ---
+        // Para fazer o contorno de um bairro ao clicar, você precisaria ter um arquivo GeoJSON
+        // com os polígonos de todos os bairros de Novo Hamburgo.
+        // Você carregaria esse GeoJSON no mapa e, no evento de clique,
+        // determinaria qual polígono de bairro contém o ponto clicado
+        // (usando uma biblioteca como Turf.js se fosse mais complexo no cliente,
+        // ou fazendo uma query no backend se os dados estivessem lá).
+        // Exemplo hipotético de como adicionar um GeoJSON (se você tivesse o arquivo):
+        /*
+        fetch('caminho/para/seus_bairros_nh.geojson')
+            .then(response => response.json())
+            .then(geojson_data => {
+                L.geoJson(geojson_data, {
+                    style: function(feature) {
+                        return { color: 'gray', weight: 1, opacity: 0.5, fillOpacity: 0.1 };
+                    },
+                    onEachFeature: function(feature, layer) {
+                        // Você pode adicionar popups com o nome do bairro aqui
+                        if (feature.properties && feature.properties.nome_bairro) {
+                            layer.bindPopup(feature.properties.nome_bairro);
+                        }
+                    }
+                }).addTo(map);
+            });
+        */
+        // Para destacar um bairro ao clicar, a lógica seria mais ou menos:
+        // map.on('click', function(e) {
+        //     // 1. Fazer uma query espacial nos seus dados GeoJSON carregados
+        //     //    para encontrar qual polígono de bairro contém e.latlng.
+        //     // 2. Se encontrar, aplicar um novo estilo a ESSE polígono.
+        //     // 3. Lembrar o polígono clicado anteriormente para reverter o estilo.
+        //     // Isso é bastante avançado e requer um mecanismo de busca espacial no cliente ou servidor.
+        // });
+function salvarNota(textareaId, index) {
+  const texto = document.getElementById(textareaId).value;
+  if (clickedLocations[index]) {
+    clickedLocations[index].nota = texto;
+    updateClickedLocationsList(); // Atualiza o painel lateral
+  }
+}
+    </script>
+</body>
+</html>

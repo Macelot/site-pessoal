@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+    <style>
+        @media screen and (max-width: 600px) {
+        .button-text {
+            display: none;
+        }
+        @media (min-width: 576px) { }
+    }
+    </style>
+    <style>
+        #mostraFoto {
+            max-width: 300px; /* Define a largura máxima da imagem */
+            max-height: 300px; /* Define a altura máxima da imagem */
+        }
+    </style>
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <input type="hidden" name="" id="id">
+            <input type="text" class="form form-control" name="" id="nome" placeholder="Nome">
+            <input type="text" class="form form-control" name="" id="idade" placeholder="Idade">
+            <input type="text" class="form form-control" name="" id="cpf" placeholder="CPF">
+            <input type="file" class="form form-control" name="" id="foto" onchange="exibirImagem(this)">
+            <img id="mostraFoto" src="">
+            <input class="btn btn-success" type="button" id="btnConfirmar" value="Confirmar" onclick="confirmar()">
+            <input class="btn btn-primary" type="button" id="btnSalvar" value="Salvar Alterações" onclick="salvar()" hidden>
+        </div>
+        <div class="row">
+            <p id="dados">
+
+            </p>
+        </div>
+        <div class="row">
+            <p id="notifica">
+
+            </p>
+        </div>
+    </div>
+    <div class="container">
+        <button class="btn btn-info" type="button" onclick="cadastra3()">Cadastra 3</button>
+        <!--button class="btn btn-dark" type="button" onclick="ordena()">Ordena</button>
+        <button class="btn btn-dark" type="button" onclick="ordenaNome()">Ordena Nome</button-->
+        <button class="btn btn-primary" id="bDuplo" type="button" onclick="listarDuplo()">Lista desativados</button>
+    </div>
+    <script>
+
+        var pessoas = [];
+        var pessoa = new Object();
+        pessoa.nome = "Marcelo";
+        pessoa.idade = 44;
+        pessoa.cpf = 123;
+        pessoa.foto = "marcelo.png";
+        pessoa.ativo = 1;
+        pessoas.push(pessoa);
+
+        // var pessoa = new Object();
+        // pessoa.nome = "Lucas";
+        // pessoa.idade = 17;
+        // pessoa.cpf = 456;
+        // pessoa.foto = "lucas.png";
+        // pessoa.ativo = 1;
+        // pessoas.push(pessoa);
+
+        var pessoa = new Object();
+        pessoa.nome = "Bruno";
+        pessoa.idade = 17;
+        pessoa.cpf = 9999;
+        pessoa.foto = "bruno.png";
+        pessoa.ativo = 1;
+        pessoas.push(pessoa);
+
+        pessoa = new Object();
+
+        console.table(pessoas);
+        listar();
+
+        function buscaCpf(qualCpf){
+            for (let index = 0; index < pessoas.length; index++) {
+                const element = pessoas[index];
+                console.log(element.cpf);
+                if(element.cpf==qualCpf){
+                    console.log("Já tem");
+                    alert("CPF já cadastrado");
+                    return true;
+                }
+            }
+        }
+        function confirmar(){
+            var pessoa = new Object();
+            if(document.getElementById('nome').value=="")
+                return
+            if(document.getElementById('idade').value=="")
+                return
+            if(document.getElementById('cpf').value=="")
+                return
+            
+            pessoa.nome = document.getElementById('nome').value;
+            pessoa.idade = document.getElementById('idade').value;
+            pessoa.cpf = document.getElementById('cpf').value;
+            pessoa.foto = document.getElementById('mostraFoto').src;
+            pessoa.ativo = 1;
+            if(buscaCpf(pessoa.cpf))
+                return
+
+            pessoas.push(pessoa);
+            listar();
+            document.getElementById('nome').value="";
+            document.getElementById('idade').value="";       
+            document.getElementById('cpf').value="";
+            document.getElementById('mostraFoto').src="";
+            document.getElementById('mostraFoto').height=1;
+            document.getElementById('foto').value="";
+        }
+
+        
+        function listar(){
+            console.table(pessoas);
+            document.getElementById('dados').innerHTML="";
+            var b1, b2;
+            var temp ="<table class='table table-hover'>";
+            temp +="<tr>";
+            temp +="<td>#id</td>";
+            temp +='<td>Nome <i class="fa fa-arrow-up" style="cursor: pointer" aria-hidden="true" onclick="ordenaNome(\'a\')"></i><i class="fa fa-arrow-down" style="cursor: pointer" aria-hidden="true" onclick="ordenaNome(\'z\')"></i> </td>';
+            temp +="<td>Idade </td>";
+            temp +="<td>CPF</td>";
+            temp +="<td>Foto</td>";
+            temp +="<td>Operações</td>";
+            temp +="</tr>";
+  
+            for (let index = 0; index < pessoas.length; index++) {
+                const element = pessoas[index];
+                if(element.ativo==1){
+                    b1 = '<button class="btn btn-danger" onclick="deletar('+index+')"><i class="fa fa-trash-o"></i><span class="button-text"> Deletar</span></button>';
+                    b2 = ' <button class="btn btn-warning" onclick="editar('+index+')"><i class="fa fa-edit"></i><span class="button-text"> Editar</span></button>';
+                    b3 = ' <button class="btn btn-info"  onclick="desativar('+index+')"><i class="fa fa fa-toggle-off"></i><span class="button-text"> Desativar</span></button>';
+                    temp +="<tr><td>"+index+ "</td><td>" +element.nome+"</td>";
+                    temp +="<td>"+element.idade+"</td>";
+                    temp +="<td>"+element.cpf+"</td>";
+                    temp +="<td><img src='"+element.foto+"' height='50'></td>";
+                    temp +="<td nowrap>"+b1+b2+b3;
+                    temp +="</td></tr>";
+                }
+            }
+            temp +="</table>";
+            document.getElementById('dados').innerHTML=temp;
+        }
+        
+        function deletar(id){
+            console.log(id);
+            var op = confirm("Deseja apagar");
+            console.log(op);
+            var lugar = document.getElementById('notifica');
+            lugar.innerHTML="";
+            if(op==true){
+                pessoas.splice(id,1);
+                lugar.innerHTML="Apagado com Sucesso";
+            }else{
+                lugar.innerHTML="Nada foi apagado";
+            }
+            listar();
+        }   
+
+        function editar(id){
+            var p =  pessoas[id];
+            console.table(p);
+            document.getElementById('id').value=id;
+            document.getElementById('nome').value=p.nome;
+            document.getElementById('idade').value=p.idade;
+            document.getElementById('cpf').value=p.cpf;
+            document.getElementById('btnConfirmar').disabled=true;
+            document.getElementById('btnSalvar').hidden=false;
+        }
+        function salvar(){
+            var pessoa = new Object();
+            var id = document.getElementById('id').value;
+            pessoa.nome = document.getElementById('nome').value;
+            pessoa.idade = document.getElementById('idade').value;
+            pessoa.cpf = document.getElementById('cpf').value;
+            pessoa.ativo = 1;
+            pessoas[id]=pessoa;
+            listar(); 
+            document.getElementById('btnConfirmar').disabled=false;
+            document.getElementById('btnSalvar').hidden=true;
+            document.getElementById('nome').value="";
+            document.getElementById('idade').value="";       
+            document.getElementById('cpf').value="";       
+        }
+
+        function cadastra3(){
+            var cont=0;
+            var pessoa;
+            var nomes = ["Rafael","Stevam","Caetano"];
+            var idades = [17,18,16];
+            var fotos = ["avatar.png","avatar2.png","avatar3.png"];
+            var cpfs = [9999,111,999];
+            while (cont<3) {
+                pessoa = new Object();
+                pessoa.nome = nomes[cont];
+                pessoa.idade = idades[cont];
+                pessoa.cpf = cpfs[cont];
+                pessoa.foto = fotos[cont];
+                pessoa.ativo = 1;
+                pessoas.push(pessoa);
+                cont++;
+            }
+            console.table(pessoas);
+            listar();
+        }
+
+        function ordena(){
+            pessoas.sort((a,b)=>{
+                return a.idade - b.idade;
+            });
+            listar();
+        }
+
+        function ordenaNome(tipo){
+            console.log(tipo);
+            var t1=-1;
+            var t2=1
+            if(tipo=="z"){
+                t1=1;
+                t2=-1;
+            }
+            pessoas.sort((a, b) => {
+                var pessoaA = a.nome.toLowerCase();
+                var pessoaB = b.nome.toLowerCase();
+
+                if (pessoaA < pessoaB) {
+                    return t1;
+                }
+                if (pessoaA > pessoaB) {
+                    return t2;
+                }
+                return 0;
+            });
+            listar();
+        }
+        
+        function desativar(id){
+            var pessoa = new Object();
+            pessoa = pessoas[id];
+            pessoa.ativo = 0;
+            pessoas[id]=pessoa;
+            listar();      
+        }
+
+        function ativar(id){
+            var pessoa = new Object();
+            pessoa = pessoas[id];
+            pessoa.ativo = 1;
+            pessoas[id]=pessoa;
+            listar2();      
+        }
+        
+
+        function listar2(){
+            console.table(pessoas);
+            document.getElementById('dados').innerHTML="";
+            var b1, b2;
+            var temp ="<table class='table table-hover'>";
+            temp +="<tr>";
+            temp +="<td>#id</td>";
+            temp +='<td>Nome <i class="fa fa-arrow-up" style="cursor: pointer" aria-hidden="true" onclick="ordenaNome(\'a\')"></i><i class="fa fa-arrow-down" style="cursor: pointer" aria-hidden="true" onclick="ordenaNome(\'z\')"></i> </td>';
+            temp +="<td>Idade </td>";
+            temp +="<td>CPF</td>";
+            temp +="<td>Foto</td>";
+            temp +="<td>Operações</td>";
+            temp +="</tr>";
+  
+            for (let index = 0; index < pessoas.length; index++) {
+                const element = pessoas[index];
+                if(element.ativo==0){
+                    // b1 = '<input class="btn btn-danger" type="button" value="deletar" onclick="deletar('+index+')">';
+                    // b2 = '<input class="btn btn-warning" type="button" value="editar" onclick="editar('+index+')">';
+                    // b3 = '<input class="btn btn-info" type="button" value="ativar" onclick="ativar('+index+')">';
+
+                    b1 = '<button class="btn btn-danger" onclick="deletar('+index+')"><i class="fa fa-trash-o"></i><span class="button-text"> Deletar</span></button>';
+                    b2 = ' <button class="btn btn-warning" onclick="editar('+index+')"><i class="fa fa-edit"></i><span class="button-text"> Editar</span></button>';
+                    b3 = ' <button class="btn btn-info"  onclick="ativar('+index+')"><i class="fa fa fa-toggle-on"></i><span class="button-text"> Ativar</span></button>';
+
+
+                    temp +="<tr><td>"+index+ "</td><td>" +element.nome+"</td>";
+                    temp +="<td>"+element.idade+"</td>";
+                    temp +="<td>"+element.cpf+"</td>";
+                    temp +="<td><img src='"+element.foto+"' height='50'></td>";
+                    temp +="<td>"+b1+b2+b3;
+                    temp +="</td></tr>";
+                }
+            }
+            temp +="</table>";
+            document.getElementById('dados').innerHTML=temp;
+        }
+
+        function listarDuplo(){
+            var texto = document.getElementById('bDuplo');
+
+            if(texto.innerHTML=="Lista desativados"){
+                document.getElementById('bDuplo').innerHTML="Lista ativados";
+                listar2();
+            }else if(texto.innerHTML=="Lista ativados"){
+                document.getElementById('bDuplo').innerHTML="Lista desativados";
+                listar();
+            }
+
+        }
+        function exibirImagem(input) {
+            // Verifica se foi selecionado algum arquivo
+            if (input.files && input.files[0]) {
+                var leitor = new FileReader();
+
+                leitor.onload = function(e) {
+                    // Define o atributo 'src' da tag <img> como o conteúdo da imagem carregada
+                    document.getElementById('mostraFoto').src = e.target.result;
+                    document.getElementById('mostraFoto').height = "200";
+                    //document.getElementById('mostraFoto').height = "100";
+                }
+
+                // Carrega o arquivo selecionado como uma URL de dados codificados em base64
+                leitor.readAsDataURL(input.files[0]);
+            }
+        }
+
+    </script>
+</body>
+</html>

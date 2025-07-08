@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sorteia sem repetir</title>
+</head>
+<body>
+    <button onclick="sorteia()">Sorteia</button>
+    <textarea rows="11" name="" id="numeros"></textarea>
+    <script>
+        function sorteia(){
+            //alert("Hello World");
+           // document.getElementById('numeros').value="";
+            var valor=[];
+            var contador=0;
+            var total=0;
+            while(total<10){
+                contador=0;
+                valor[total] = Math.floor(Math.random()*10)+1;
+                console.log(".."+valor[total]);
+                for (let i = 0; i < 10; i++) {
+                    if(valor[total]!=valor[i]){
+                        contador++;
+                    }
+                }
+                console.log("CONTADOR "+contador);
+                if(contador==9){
+                    total++;
+                }
+            }
+            console.table(valor);
+            document.getElementById('numeros').append(valor+"\n");
+        }
+    </script>
+</body>
+</html>

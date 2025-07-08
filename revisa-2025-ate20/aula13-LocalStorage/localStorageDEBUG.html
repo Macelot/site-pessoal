@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <title>Local Storage</title>
+    <meta charset="utf-8"/>
+</head>
+<body>
+    <script language="JavaScript">
+		localStorage.clear();
+		//Como criar um objeto no localStorage
+		let produto = { descricao: 'teclado', valor: 599.50 };
+		localStorage.setItem(3, JSON.stringify(produto));
+        //o JSON.stringify é usado para colocar Arrays e Objetos no localStorage
+
+        //conferindo o valor do localStorage
+		console.log(JSON.parse(localStorage.getItem(3)));
+        //o JSON.parse precisa ser usado aqui pois na chave 3 temos um Objeto
+
+		
+	</script>
+</body>
+</html>

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Leitor de QR Code</title>
+  <script src="https://unpkg.com/html5-qrcode"></script>
+</head>
+<body>
+  <h1>Scanner de QR Code</h1>
+  <div id="reader" style="width: 300px;"></div>
+  <p><strong>Resultado:</strong> <span id="resultado"></span></p>
+
+  <script>
+    function onScanSuccess(decodedText, decodedResult) {
+      document.getElementById('resultado').textContent = decodedText;
+      document.getElementById('resultado').innerHTML = '<a href="'+decodedText+'">CLIQUE</a>';
+    }
+
+    const html5QrCode = new Html5Qrcode("reader");
+
+    html5QrCode.start(
+      { facingMode: "environment" },
+      {
+        fps: 10,
+        qrbox: 250
+      },
+      onScanSuccess
+    ).catch((err) => {
+      console.error("Erro ao iniciar leitor:", err);
+    });
+  </script>
+</body>
+</html>
