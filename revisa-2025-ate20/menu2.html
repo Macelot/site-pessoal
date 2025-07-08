@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menu de Aulas</title>
+    <style>
+        /* Reset básico */
+        body, ul, ol, li, h1, h2, h3, p {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f2f5; /* Cor de fundo suave */
+            color: #333;
+            overflow-y: auto; /* Permite scroll se o conteúdo for grande */
+        }
+
+        .menu-container {
+            width: 100%;
+            max-width: 350px; /* Largura máxima para o menu */
+            margin: 0 auto; /* Centraliza o menu se o iframe for maior */
+            background-color: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            overflow: hidden; /* Garante que os cantos arredondados sejam respeitados */
+        }
+
+        .menu-header {
+            background-color: #007bff; /* Cor primária */
+            color: white;
+            padding: 18px 20px;
+            font-size: 1.4em;
+            font-weight: 600;
+            text-align: center;
+            border-bottom: 1px solid #0056b3;
+        }
+
+        .menu-group {
+            border-bottom: 1px solid #eee;
+        }
+        .menu-group:last-child {
+            border-bottom: none;
+        }
+
+        .group-title {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px;
+            background-color: #f7f7f7;
+            cursor: pointer;
+            font-weight: 600;
+            color: #444;
+            transition: background-color 0.2s ease;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .group-title:hover {
+            background-color: #e9e9e9;
+        }
+
+        .group-title .icon {
+            font-size: 1.1em;
+            transition: transform 0.3s ease;
+            color: #555;
+        }
+
+        .group-title.active .icon {
+            transform: rotate(180deg); /* Gira o ícone para cima */
+        }
+
+        .group-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease-out; /* Transição mais suave */
+            background-color: #ffffff;
+            padding: 0 20px;
+        }
+        .group-content.show {
+            max-height: 800px; /* Um valor alto para cobrir todos os conteúdos. Ajuste se necessário */
+            padding-bottom: 15px;
+        }
+
+        .group-content ul, .group-content ol {
+            list-style: none; /* Remove marcadores */
+            padding: 0;
+            margin: 10px 0 0 0; /* Espaço superior para o primeiro item */
+        }
+
+        .group-content li {
+            padding: 10px 0;
+            border-bottom: 1px dashed #e9e9e9;
+        }
+        .group-content li:last-child {
+            border-bottom: none;
+        }
+
+        .group-content a {
+            text-decoration: none;
+            color: #007bff; /* Links em azul primário */
+            display: block;
+            padding: 0; /* Remove padding extra do link */
+            transition: color 0.2s ease;
+        }
+
+        .group-content a:hover {
+            color: #0056b3;
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="menu-container">
+        <div class="menu-header">
+            Menu de Aulas JavaScript
+        </div>
+
+        <div class="menu-group">
+            <div class="group-title">
+                <span>Aula 01 - Alert, console.log e Função</span>
+                <span class="icon">&#9660;</span> </div>
+            <div class="group-content">
+                <ul>
+                    <li><a href="aula01-Alert/calculo.html" target="iframe_b">Calculo</a></li>
+                    <li><a href="aula01-Alert/exemplo1.html" target="iframe_b">Exemplo</a></li>
+                    <li><a href="aula01-Alert/revisa-aula1.html" target="iframe_b">Revisão</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="menu-group">
+            <div class="group-title">
+                <span>Aula 02 - If e Tags</span>
+                <span class="icon">&#9660;</span>
+            </div>
+            <div class="group-content">
+                <ul>
+                    <li><a href="aula02-If/exemplo01.html" target="iframe_b">Exemplo 01</a></li>
+                    <li><a href="aula02-If/exemplo02.html" target="iframe_b">Exemplo 02</a></li>
+                    <li><a href="aula02-If/exemplo3.html" target="iframe_b">Exemplo 03</a></li>
+                    <li><a href="aula02-If/Trabalho01.html" target="iframe_b">Trabalho 01</a></li>
+                    <li><a href="aula02-If/Trabalho02.html" target="iframe_b">Trabalho 02</a></li>
+                    <li><a href="aula02-If/Trabalho03.html" target="iframe_b">Trabalho 03</a></li>
+                    <li><a href="aula02-If/Trabalho04.html" target="iframe_b">Trabalho 04</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="menu-group">
+            <div class="group-title">
+                <span>Aula 03 - Função e Comparação IF</span>
+                <span class="icon">&#9660;</span>
+            </div>
+            <div class="group-content">
+                <ul>
+                    <li><a href="aula03-Function/aula3.html" target="iframe_b">Aula 3</a></li>
+                    <li><a href="aula03-Function/porcentagem.html" target="iframe_b">Percentual</a></li>
+                    <li><a href="aula03-Function/salario.html" target="iframe_b">Salário</a></li>
+                    <li><a href="aula03-Function/votacao.html" target="iframe_b">Votação</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="menu-group">
+            <div class="group-title">
+                <span>Aula 04 - CheckBox e Função</span>
+                <span class="icon">&#9660;</span>
+            </div>
+            <div class="group-content">
+                <ul>
+                    <li><a href="aula04-Checkbox/aula4.html" target="iframe_b">CheckBox e Função</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="menu-group">
+            <div class="group-title">
+                <span>Aula 05 - Radio, Range e Função</span>
+                <span class="icon">&#9660;</span>
+            </div>
+            <div class="group-content">
+                <ul>
+                    <li><a href="aula05-Radio/aula5.html" target="iframe_b">Aula 5</a></li>
+                    <li><a href="aula05-Radio/aula5-camisa.html" target="iframe_b">Camisa</a></li>
+                    <li><a href="aula05-Radio/pagina5v2.html" target="iframe_b">Novo Exemplo</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="menu-group">
+            <div class="group-title">
+                <span>Aula 06 - Login (Básico)</span>
+                <span class="icon">&#9660;</span>
+            </div>
+            <div class="group-content">
+                <ul>
+                    <li><a href="aula06-Login/cadastrar.html" target="iframe_b">Cadastrar</a></li>
+                    <li><a href="aula06-Login/entrar.html" target="iframe_b">Entrar</a></li>
+                    <li><a href="aula06-Login/login.html" target="iframe_b">Login</a></li>
+                    <li><a href="aula06-Login/recuperar.html" target="iframe_b">Recuperar</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="menu-group">
+            <div class="group-title">
+                <span>Aula 07 - Login (Mais Exemplo)</span>
+                <span class="icon">&#9660;</span>
+            </div>
+            <div class="group-content">
+                <ul>
+                    <li><a href="aula07-Login/cadastro.html" target="iframe_b">Exemplo Básico</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="menu-group">
+            <div class="group-title">
+                <span>Aula 08 - Local Storage</span>
+                <span class="icon">&#9660;</span>
+            </div>
+            <div class="group-content">
+                <ul>
+                    <li><a href="aula08-LocalStorage/aula8.html" target="iframe_b">Aula 8</a></li>
+                    <li><a href="aula08-LocalStorage/pagina_de_exemplo_Local_Storage.html" target="iframe_b">Local Storage</a></li>
+                    <li><a href="aula08-LocalStorage/arrayCadastroLocalStorage.html" target="iframe_b">Array Local Storage</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="menu-group">
+            <div class="group-title">
+                <span>Aula 09 - Array e Gráficos</span>
+                <span class="icon">&#9660;</span>
+            </div>
+            <div class="group-content">
+                <ul>
+                    <li><a href="aula09-ArrayGrafico/exemploArray.html" target="iframe_b">Exemplo Array</a></li>
+                    <li><a href="aula09-ArrayGrafico/grafico-planta.html" target="iframe_b">Gráfico Planta</a></li>
+                    <li><a href="aula09-ArrayGrafico/grafico1.html" target="iframe_b">Gráfico 1</a></li>
+                    <li><a href="aula09-ArrayGrafico/grafico2.html" target="iframe_b">Gráfico 2</a></li>
+                    <li><a href="aula09-ArrayGrafico/grafico3.html" target="iframe_b">Gráfico 3</a></li>
+                    <li><a href="aula09-ArrayGrafico/graficoDuasLinhas.html" target="iframe_b">Gráfico 2 Linhas</a></li>
+                    <li><a href="aula09-ArrayGrafico/graficoINSS.html" target="iframe_b">Gráfico INSS</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="menu-group">
+            <div class="group-title">
+                <span>Aula 10 - Array</span>
+                <span class="icon">&#9660;</span>
+            </div>
+            <div class="group-content">
+                <ul>
+                    <li><a href="aula10-Array/aula10.html" target="iframe_b">Aula 10</a></li>
+                    <li><a href="aula10-Array/arrayFinal.html" target="iframe_b">Array</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="menu-group">
+            <div class="group-title">
+                <span>Aula 11 - WhatsApp</span>
+                <span class="icon">&#9660;</span>
+            </div>
+            <div class="group-content">
+                <ul>
+                    <li><a href="aula11-Whats/aula.html" target="iframe_b">Whats</a></li>
+                    <li><a href="aula11-Whats/pagina_11-FeitoAula.html" target="iframe_b">Enviar Whats</a></li>
+                    <li><a href="aula11-Whats/pagina_11-FeitoAulaPais.html" target="iframe_b">Código País</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="menu-group">
+            <div class="group-title">
+                <span>Aula 12 - Buscas</span>
+                <span class="icon">&#9660;</span>
+            </div>
+            <div class="group-content">
+                <ul>
+                    <li><a href="aula12-Busca/arrayBusca.html" target="iframe_b">Buscas</a></li>
+                    <li><a href="aula12-Busca/arrayBuscaFinal.html" target="iframe_b">Buscas Novo Exemplo</a></li>
+                    <li><a href="aula12-Busca/arrayCadastroData.html" target="iframe_b">Buscas por Data</a></li>
+                    <li><a href="aula12-Busca/arrayCadastroDataTel.html" target="iframe_b">Buscas por Telefone</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="menu-group">
+            <div class="group-title">
+                <span>Aula 13 - Local Storage (Produtos)</span>
+                <span class="icon">&#9660;</span>
+            </div>
+            <div class="group-content">
+                <ul>
+                    <li><a href="aula13-LocalStorage/arrayCadastroProdutosLocalStorage.html" target="iframe_b">Cadastro</a></li>
+                    <li><a href="aula13-LocalStorage/localStorage.html" target="iframe_b">Local Storage</a></li>
+                    <li><a href="aula13-LocalStorage/localStorageDEBUG.html" target="iframe_b">Local Storage DEBUG</a></li>
+                    <li><a href="aula13-LocalStorage/atividade.html" target="iframe_b">Atividade</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="menu-group">
+            <div class="group-title">
+                <span>Aula 14 - Listas e Ordenação</span>
+                <span class="icon">&#9660;</span>
+            </div>
+            <div class="group-content">
+                <ul>
+                    <li><a href="aula14-PaginaSelect/aula14.html" target="iframe_b">Exemplo 1</a></li>
+                    <li><a href="aula14-PaginaSelect/adicionarLista.html" target="iframe_b">Adicionar na Lista</a></li>
+                    <li><a href="aula14-PaginaSelect/adicionarLista2.html" target="iframe_b">Adicionar na Lista 2</a></li>
+                    <li><a href="aula14-PaginaSelect/adicionarLista3.html" target="iframe_b">Adicionar na Lista 3</a></li>
+                    <li><a href="aula14-PaginaSelect/arrayCadastroDataTel-ORDENA.html" target="iframe_b">Ordenação</a></li>
+                    <li><a href="aula14-PaginaSelect/arrayCadastroDataTel-PAGINA.html" target="iframe_b">Paginação</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="menu-group">
+            <div class="group-title">
+                <span>Aula 15 - SweetAlert</span>
+                <span class="icon">&#9660;</span>
+            </div>
+            <div class="group-content">
+                <ul>
+                    <li><a href="aula15-SweetAlert/aula15.html" target="iframe_b">Aula 15</a></li>
+                    <li><a href="aula15-SweetAlert/exemploSweetAlert.html" target="iframe_b">SweetAlert</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="menu-group">
+            <div class="group-title">
+                <span>Aula 16 - WebCam</span>
+                <span class="icon">&#9660;</span>
+            </div>
+            <div class="group-content">
+                <ul>
+                    <li><a href="aula16-WebCam/pagina1WebCam.html" target="iframe_b">WebCam</a></li>
+                    <li><a href="aula16-WebCam/pagina2Qrcode.html" target="iframe_b">QR Code</a></li>
+                    <li><a href="aula16-WebCam/pagina3Captura.html" target="iframe_b">Captura</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="menu-group">
+            <div class="group-title">
+                <span>Aula 17 - Link QR Code</span>
+                <span class="icon">&#9660;</span>
+            </div>
+            <div class="group-content">
+                <ul>
+                    <li><a href="aula17-LinkQrCode/paginaQrCode.html" target="iframe_b">Link QR Code</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="menu-group">
+            <div class="group-title">
+                <span>Aula 18 - Sorteio</span>
+                <span class="icon">&#9660;</span>
+            </div>
+            <div class="group-content">
+                <ul>
+                    <li><a href="aula18-sorteio/paginaBingo.html" target="iframe_b">Bingo</a></li>
+                    <li><a href="aula18-sorteio/paginaSemRepetir.html" target="iframe_b">Sorteia Sem Repetir</a></li>
+                    <li><a href="aula18-sorteio/exemploSweetAlert.html" target="iframe_b">SweetAlert Exemplo Novo</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="menu-group">
+            <div class="group-title">
+                <span>Aula 19 - Calculadora</span>
+                <span class="icon">&#9660;</span>
+            </div>
+            <div class="group-content">
+                <ul>
+                    <li><a href="aula19-calculadora/calculadora.html" target="iframe_b">Calculadora Simples</a></li>
+                    <li><a href="aula19-calculadora/calculadora-estilos.html" target="iframe_b">Calculadora Estilizada</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="menu-group">
+            <div class="group-title">
+                <span>Aula 20 - Mapas</span>
+                <span class="icon">&#9660;</span>
+            </div>
+            <div class="group-content">
+                <ul>
+                    <li><a href="aula20-mapa/exemplo1.html" target="iframe_b">Mapa Exemplo 1</a></li>
+                    <li><a href="aula20-mapa/exemplo2.html" target="iframe_b">Mapa Exemplo 2</a></li>
+                </ul>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const groupTitles = document.querySelectorAll('.group-title');
+
+            groupTitles.forEach(title => {
+                title.addEventListener('click', function() {
+                    const content = this.nextElementSibling; // O .group-content logo após o título
+
+                    // Alterna a classe 'show' no conteúdo
+                    content.classList.toggle('show');
+                    // Alterna a classe 'active' no título (para girar o ícone)
+                    this.classList.toggle('active');
+
+                    // OPCIONAL: Fechar outros grupos abertos (comportamento de acordeão)
+                    // Se você quiser que apenas um grupo esteja aberto por vez, descomente o bloco abaixo:
+                    /*
+                    groupTitles.forEach(otherTitle => {
+                        if (otherTitle !== this && otherTitle.classList.contains('active')) {
+                            otherTitle.classList.remove('active');
+                            otherTitle.nextElementSibling.classList.remove('show');
+                        }
+                    });
+                    */
+                });
+            });
+        });
+    </script>
+
+</body>
+</html>
