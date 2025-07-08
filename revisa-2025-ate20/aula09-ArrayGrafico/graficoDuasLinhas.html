@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gráfico de Salários Comparativos</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="container mt-5">
+        <h2>Evolução Salarial (2015 - 2025)</h2>
+        <canvas id="salarioComparativo" width="400" height="200"></canvas>
+    </div>
+
+    <script>
+        const ctxSalario = document.getElementById('salarioComparativo').getContext('2d');
+
+        const anos = [2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025];
+
+        const salarioAdvogado = [
+            2500, 2800, 3200, 3700, 4300, 5000, 5800, 6700, 7700, 8800, 10000
+        ];
+
+        const salarioDactilografo = [
+            6000, 5700, 5400, 5100, 4800, 4500, 4200, 3900, 3600, 3300, 3000
+        ];
+
+        const salarioComparativoChart = new Chart(ctxSalario, {
+            type: 'line',
+            data: {
+                labels: anos,
+                datasets: [
+                    {
+                        label: 'Salário Advogado (R$)',
+                        data: salarioAdvogado,
+                        borderColor: 'rgba(0, 123, 255, 1)', // Azul
+                        borderWidth: 2,
+                        fill: false
+                    },
+                    {
+                        label: 'Salário Dactilógrafo (R$)',
+                        data: salarioDactilografo,
+                        borderColor: 'rgba(220, 53, 69, 1)', // Vermelho
+                        borderWidth: 2,
+                        fill: false
+                    }
+                ]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'Salário (R$)'
+                        }
+                    },
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Ano'
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        display: true,
+                        position: 'top'
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>

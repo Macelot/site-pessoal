@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Exemplo de checkbox</h1>
+    <b>Escolha seu lanche</b><hr>
+    <input type="checkbox" name="" id="pizza">Pizza R$ 20.00<br>
+    <input type="checkbox" name="" id="hamburguer">Hamburguer R$ 18.00<br>
+    <input type="checkbox" name="" id="suco">Suco R$ 10.00<br>
+    <input type="checkbox" name="" id="refri">Refri R$ 8.00<br>
+    <input type="checkbox" name="" id="sorvete">Sorvete R$ 15.00<br>
+    <input type="checkbox" name="" id="açai">Açai R$ 16.00<br>
+    <hr>
+    <button onclick="pedido()">Finalizar Pedido</button>
+    <p id="resumoPedido"></p>
+    <script>
+        function pedido(){
+            let lanche="";
+            let total=0;
+            let pizza = document.getElementById('pizza').checked;
+            if(pizza){
+                lanche += " Pizza";
+                total += 20;
+            }
+
+            let hamburguer = document.getElementById('hamburguer').checked;
+            if(hamburguer){
+                lanche += " Hamburguer";
+                total += 18;
+            }
+
+            let suco = document.getElementById('suco').checked;
+            if(suco){
+                lanche += " Suco";
+                total += 10;
+            }
+
+            let refri = document.getElementById('refri').checked;
+            if(refri){
+                lanche += " Refri";
+                total += 8;
+            }
+
+            let sorvete = document.getElementById('sorvete').checked;
+            if(sorvete){
+                lanche += " sorvete";
+                total += 15;
+            }
+
+            let acai = document.getElementById('açai').checked;
+            if(acai){
+                lanche += " Açai";
+                total += 16;
+            }
+
+            document.getElementById('resumoPedido').innerHTML = lanche;
+
+            document.getElementById('resumoPedido').innerHTML += total;
+
+            
+        }
+
+    </script>
+</body>
+</html>

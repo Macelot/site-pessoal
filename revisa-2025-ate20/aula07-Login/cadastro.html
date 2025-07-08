@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro</title>
+</head>
+
+<body>
+
+    <input type="text" name="" id="usuario" placeholder="usuário"><br>
+    <input type="password" name="" id="senha1" placeholder="senha"><br>
+    <input type="password" name="" id="senha2" placeholder="repetir senha"><br>
+    <button onclick="cadastrar()">Cadastrar</button>
+
+    <button onclick="window.close()">Fechar</button>
+    
+    <a href="login.html">Voltar</a>
+
+    <script>
+        var usuarios = [];
+        function cadastrar(){
+            var user = document.getElementById('usuario').value;
+            var pass1 = document.getElementById('senha1').value;
+            var pass2 = document.getElementById('senha2').value;
+            if(user==""){
+                alert("Preencha o usuário");
+                return;
+            }
+            if(pass1!=pass2){
+                alert("Confira as senhas");
+                return;
+            }
+            var cadastro = new Object();
+            cadastro.nome=user;
+            cadastro.senha=pass1;
+            usuarios.push(cadastro);
+            var dados = JSON.stringify(usuarios);
+            localStorage.setItem("logins",dados);
+
+
+        }
+    </script>
+
+</body>
+</html>

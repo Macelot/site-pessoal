@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calcualr</title>
+</head>
+<body> 
+
+    <input type="text" nane="" id="caixa">
+    <br>
+    <input type="button" value="7" onclick="bote_caixa(7)">
+    <input type="button" value="8" onclick="bote_caixa(8)">
+    <input type="button" value="9" onclick="bote_caixa(9)">
+    <input type="button" value="x" onclick="bote_caixa('x')">
+    <br>
+    <input type="button" value="4" onclick="bote_caixa(4)">
+    <input type="button" value="5" onclick="bote_caixa(5)">
+    <input type="button" value="6" onclick="bote_caixa(6)">
+    <input type="button" value="-" onclick="bote_caixa('-')">
+    <br>
+    <input type="button" value="3" onclick="bote_caixa(3)">
+    <input type="button" value="2" onclick="bote_caixa(2)">
+    <input type="button" value="1" onclick="bote_caixa(1)">
+    <input type="button" value="=" onclick="bote_caixa('=')">
+    <br>
+    <input type="button" value="+/-" onclick="bote_caixa('+/-')">
+    <input type="button" value="," onclick="bote_caixa(',')">
+    <input type="button" value="0" onclick="bote_caixa(0)">
+
+    <input type="button" value="CE" onclick="apaga()">
+</body>
+    <script>
+        function bote_caixa(n){
+            let digitado = document.getElementById('caixa').value;
+            document.getElementById('caixa').value=digitado+n;
+        }
+
+        function apaga(){
+            
+            document.getElementById('caixa').value='';
+        }
+
+    </script>
+</html>

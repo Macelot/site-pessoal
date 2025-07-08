@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    Escolha a cor:<br>
+    <input type="radio" name="cor" id="A" onclick="ajustaCor('blue')">Azul<br>
+    <input type="radio" name="cor" id="B" onclick="ajustaCor('yellow')">Amarelo<br>
+    <input type="radio" name="cor" id="V" onclick="ajustaCor('green')">Verde<br>
+<hr>
+    Escolha o tamanho<br>
+    <input type="radio" name="tam" id="P" onclick="ajustaTam('20px')">Pequeno<br>
+    <input type="radio" name="tam" id="M" onclick="ajustaTam('40px')">Médio<br>
+    <input type="radio" name="tam" id="G" onclick="ajustaTam('60px')">Grande<br>
+<hr>
+Cor escolhida: 
+<div id="resultadoCor" style="background-color: blue;">
+    cor
+</div>
+
+<script>
+    function ajustaCor(cor){
+        document.getElementById('resultadoCor').style.backgroundColor=cor;
+    }
+    function ajustaTam(fonte){
+        document.getElementById('resultadoCor').style.fontSize=fonte;
+    }
+</script>
+</body>
+</html>

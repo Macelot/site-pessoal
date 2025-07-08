@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <title>Local Storage</title>
+    <meta charset="utf-8"/>
+</head>
+<body>
+    <script language="JavaScript">
+		localStorage.clear();
+		var arr=[];
+        //verificar se existe a chave alunos no localStorage
+		if(localStorage.getItem('alunos')!=null){
+            //caso tiver a chave alunos, vamos alimentar 
+            //o array alunos com as informações do localStorage
+			arr=JSON.parse(localStorage.getItem('alunos'));
+		}
+		localStorage.setItem("valor","Aula9");
+		const keys = Object.keys(localStorage);
+		console.log("keys---------");
+		console.log(keys);
+
+		console.log("itens---------");
+		for (const key of keys) {
+			console.log(localStorage.getItem(key));
+		}
+
+		console.log("Bem vindo---------");
+		//para limpar tudo LocalStorage.
+		localStorage.clear(); 
+		
+		//para definir um valor no localStorage
+		localStorage.setItem("cidade", "Novo Hamburgo");
+
+        //para pegar um valor do localStorage e colocar em uma 
+        //variável JavaScript
+		let cidade = localStorage.getItem("cidade");
+
+        //conferindo o valor da variável
+		console.log(cidade);
+		
+		//para remover uma chave do localStorage
+		localStorage.removeItem("cidade");
+		
+		//Como criar um objeto no localStorage
+		let produto = { descricao: 'teclado', valor: 599.50 };
+		localStorage.setItem(3, JSON.stringify(produto));
+        //o JSON.stringify é usado para colocar Arrays e Objetos no localStorage
+
+        //conferindo o valor do localStorage
+		console.log(JSON.parse(localStorage.getItem(3)));
+        //o JSON.parse precisa ser usado aqui pois na chave 3 temos um Objeto
+
+		//Como criar um array no localStorage
+		var dias = ["segunda","terça","quarta","quinta","sexta"];
+		localStorage.setItem('dias', dias); //este var dar errado, faltou JSON.stringify vai ficar uma string
+		
+		//Este vai dar certo, tem  JSON.stringify
+		var dias_2 = ["segunda","terça","quarta","quinta","sexta","sábado","Domingo"];
+		localStorage.setItem('dias_2', JSON.stringify(dias_2));
+
+		//Este vai dar certo, tem  JSON.parse
+		var diasGravados = JSON.parse(localStorage.getItem('dias_2'));
+		
+		console.table(diasGravados);	
+		
+		//localStorage.clear();
+		
+	</script>
+</body>
+</html>

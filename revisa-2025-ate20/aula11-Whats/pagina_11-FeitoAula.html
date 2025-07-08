@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <script src="https://kit.fontawesome.com/781b92b6d9.js" crossorigin="anonymous"></script>
+    <style>
+        td {
+        height: 50px;
+        vertical-align: bottom;
+        }
+    </style>
+</head>
+<!-- Montar link whatsApp 
+    Ordenar por data de inserção  
+    Mensagens usando Modal centralizado
+    
+-->
+<body>
+    <form action="">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>Nome</th>
+                    <th>Alimentação</th>
+                    <th>Altura</th>
+                    <th>Fone</th>
+                    <th>Operações</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><input type="text" name="" id="nome"></td>
+                    <td><input type="text" name="" id="alim"></td>
+                    <td><input type="text" name="" id="altu" size="4"></td>
+                    <td><input type="text" name="" id="fone" size="10"></td>
+                    <td>
+                        <input type="button" class="btn btn-primary" value="Adicionar" id="btnAdicionar" onclick="adicionar()">
+                        <input type="button" class="btn btn-dark" value="Confirmar" id="btnConfirmar" onclick="confirmar()" style="visibility:hidden">                
+                        <input type="button" class="btn btn-info" value="Listar" onclick="listar()">   
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+
+       
+    </form>
+    <div id="local"></div>
+
+
+    <input type="button" class="btn btn-info" value="Cadastra 2" id="btnAdicionar" onclick="adicionar()">
+    <input type="button" class="btn btn-success" value="Cadastra 5" id="btnConfirmar" onclick="confirmar()" >                
+    <input type="button" class="btn btn-danger" value="Apaga Todos" onclick="listar()">   
+
+    <script>
+        var dinos = [];
+        var idClicado;
+        var dino = new Object();
+        dino.nome = "Tiranossauro";
+        dino.alim = "Carnívoro";
+        dino.altu = "3m";
+        dino.fone = "5191644455";
+        dinos.push(dino);
+
+        dino = new Object();
+        dino.nome = "Braquissauro";
+        dino.alim = "Herbívoro";
+        dino.altu = "1m";
+        dino.fone = "5191644411";
+        dinos.push(dino);
+
+        listar();
+
+        function adicionar(){
+            var dino = new Object();
+            dino.nome = document.getElementById('nome').value;
+            dino.alim = document.getElementById('alim').value;
+            dino.altu = document.getElementById('altu').value;
+            dino.fone = document.getElementById('fone').value;
+            dinos.push(dino);
+            listar();
+        }
+        function listar(){
+            console.table(dinos);
+            var dados = document.getElementById('local').innerHTML="";
+            var conteudo = "<table class='table table-hover'>";
+                conteudo += "<thead>";
+                conteudo += "<tr>";
+                conteudo += "<th>Nome</th>";
+                conteudo += "<th>Alimentação</th>";
+                conteudo += "<th>Altura</th>";
+                conteudo += "<th>Fone</th>";
+                conteudo += "<th>Operações</th>";
+                conteudo += "</tr>";
+                conteudo += "</thead>";
+                conteudo += "<tbody>";
+            for (let index = 0; index < dinos.length; index++) {
+                const element = dinos[index];
+                conteudo+="<tr>";
+                conteudo+="<td>"+element.nome+"</td>";
+                conteudo+="<td>"+element.alim+"</td>";
+                conteudo+="<td>"+element.altu+"</td>";
+                conteudo+="<td>"+element.fone+"</td>";
+                conteudo+='<td valign="center">';
+                conteudo+='&nbsp;&nbsp;&nbsp;<i onclick="apagar('+index+')" style="font-size:32px;color: #e1230e;" class="fa-solid fa-trash" ></i>';
+                conteudo+='&nbsp;&nbsp;&nbsp;<i onclick="editar('+index+')" style="font-size:32px;color: #c0bb30;" class="fa-regular fa-pen-to-square" ></i>';
+                conteudo+='&nbsp;&nbsp;&nbsp;<i onclick="enviar('+index+')" style="font-size:32px;color: #25D366;" class="fa-brands fa-whatsapp" ></i>';
+
+                
+                conteudo+="</td></tr>";
+            }
+            conteudo += "</tbody>";
+            conteudo += "</table>";
+            document.getElementById('local').innerHTML=conteudo;
+        }
+        function apagar(id){
+            console.log(id);
+            if(confirm("Tem certeza?"))
+                dinos.splice(id,1);
+            listar();    
+        }
+        function editar(id){
+            var dino = dinos[id];
+            idClicado = id;
+            document.getElementById('nome').value = dino.nome; 
+            document.getElementById('alim').value = dino.alim; 
+            document.getElementById('altu').value = dino.altu;
+            document.getElementById('fone').value = dino.fone;
+            document.getElementById('btnAdicionar').disabled=true;
+            document.getElementById('btnConfirmar').style.visibility="visible";
+        }
+        function confirmar(){
+            var dino = new Object();
+            dino.nome = document.getElementById('nome').value;
+            dino.alim = document.getElementById('alim').value;
+            dino.altu = document.getElementById('altu').value;
+            dino.fone = document.getElementById('fone').value;
+            dinos[idClicado] = dino;
+            listar();
+            document.getElementById('nome').value = ""; 
+            document.getElementById('alim').value = ""; 
+            document.getElementById('altu').value = "";
+            document.getElementById('fone').value = "";
+            document.getElementById('btnAdicionar').disabled=false;
+            document.getElementById('btnConfirmar').style.visibility="hidden";
+
+        }
+        function enviar(id){
+            let dino = dinos[id];
+            var link = "https://wa.me/55"+dino.fone+"?text=Ol%C3%A1%20"+encodeURIComponent(dino.nome);
+            console.log(link);
+            window.open(link);
+        }
+    </script>
+</body>
+</html>

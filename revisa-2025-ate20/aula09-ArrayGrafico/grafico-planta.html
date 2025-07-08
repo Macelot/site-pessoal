@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gráfico planta</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+
+    <div class="container mt-5">
+        <h2> Cor do gráfico </h2>
+        <input type="color" name="" id="" oninput="vai(this)" size="10%">
+        <input type="text" name="" id="R" size="4%">
+        <input type="text" name="" id="G" size="4%">
+        <input type="text" name="" id="B" size="4%">
+        <h2> Tamanho da planta </h2>
+        <canvas id="exponentialChart" width="300" height="200"></canvas>
+
+    </div>
+    <script>
+        let cor_ = 'rgb(00, 00, 39)';
+        let ctxExponential;
+        let exponentialChart;
+
+        function vai(e){
+            console.log('chegando');
+            console.log(e.value);
+            // #6767ff
+            // 0123456
+            let r = e.value.substring(1,3);
+            let g = e.value.substring(3,5);
+            let b = e.value.substring(5,7);
+
+            console.log(r);
+
+            document.getElementById('R').value = r;
+            document.getElementById('G').value = g;
+            document.getElementById('B').value = b;
+
+            r = parseInt(r, 16);
+            g = parseInt(g, 16);
+            b = parseInt(b, 16);
+
+
+            let cor = 'rgb('+r+', '+g+', '+b+')';
+            faz(cor);
+        }
+
+        function faz(cor){
+            if(exponentialChart) {
+                exponentialChart.destroy()
+            } 
+
+            console.log('COR = ');
+            console.log(cor);
+
+
+
+            ctxExponential = document.getElementById('exponentialChart').getContext('2d');
+            exponentialChart = new Chart(ctxExponential, {
+                type: 'line',
+                data: {
+                    labels: ['1', '2', '3', '4', '5'],
+                    datasets: [{
+                        label: 'Tamanho (cm)',
+                        data: [2, 4, 6, 8, 10],
+                        borderColor: cor,
+                        borderWidth: 3,
+                        fill: true
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'Tamanho (cm)'
+                            }
+                        },
+                        x: {
+                            title: {
+                                display: true,
+                                text: 'Semana'
+                            }
+                        }
+                    }
+                }
+            });
+        }
+        
+        
+    </script>
+</body>
+</html>

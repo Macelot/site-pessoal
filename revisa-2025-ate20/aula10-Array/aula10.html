@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <button onclick="mostraArray()">Mostra</button>
+    <button onclick="slice1()">Slice(1)</button>
+    <button onclick="slice3()">Slice(3)</button>
+    <hr>
+    <button onclick="slice02()">Slice(0,2)</button>
+    <button onclick="slice24()">Slice(2,4)</button>
+    <hr>
+    <button onclick="mostraMeses()">Mostra Meses</button>
+    <button onclick="splice1()">Splice(1)</button>
+    <button onclick="splice3()">Splice(3)</button>
+    <button onclick="splice46()">Splice(4,6)</button>
+    <p id="dados"></p>
+    <script>
+        //slice
+        let dias = ["seg","ter","qua","qui","sex"];
+        let meses = [];
+        meses.push("Jan");
+        meses.push("Fev");
+        meses.push("Mar");
+        meses.push("Abr");
+        meses.push("Mai");
+        meses.push("Jun");
+        meses.push("Jul");
+        meses.push("Ago");
+        meses.push("Set");
+        meses.push("Out");
+        meses.push("Nov");
+        meses.push("Dez");
+
+        function mostraArray(){
+            console.log(dias);
+            document.getElementById("dados").innerHTML = dias;
+        }
+        function slice1(){
+            let dias_cortado = dias.slice(1);
+            document.getElementById("dados").innerHTML = dias_cortado;
+        }
+        function slice3(){
+            let dias_cortado = dias.slice(3);
+            document.getElementById("dados").innerHTML = dias_cortado;
+        }
+        function slice02(){
+            let dias_cortado = dias.slice(0,2);
+            document.getElementById("dados").innerHTML = dias_cortado;
+        }
+        function slice24(){
+            let dias_cortado = dias.slice(2,4);
+            document.getElementById("dados").innerHTML = dias_cortado;
+        }
+        function mostraMeses(){
+            console.log(meses);
+            document.getElementById("dados").innerHTML = meses;
+        }
+
+        function splice1(){
+            let meses_cortado = meses.splice(1);
+            document.getElementById("dados").innerHTML = meses_cortado;
+        }
+
+        function splice3(){
+            let meses_cortado = meses.splice(3);
+            document.getElementById("dados").innerHTML = meses_cortado;
+        }
+        function splice46(){
+            let meses_cortado = meses.splice(4,6);
+            document.getElementById("dados").innerHTML = meses_cortado;
+            document.getElementById("dados").innerHTML += '<br>';
+            document.getElementById("dados").innerHTML += meses;
+        }
+    </script>
+</body>
+</html>

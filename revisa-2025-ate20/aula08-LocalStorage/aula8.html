@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        //gravar no local storage
+        localStorage.setItem("escola","Feevale");
+        //limpar o local storage
+        localStorage.clear();
+        //gravar mais dados no local storage
+        let escolas = [];
+        escolas.push("Feevale");
+        escolas.push("Santa");
+        //gravando texto simples
+        localStorage.setItem("escolas",escolas);
+        //gravando o array
+        localStorage.setItem("escolas2",JSON.stringify(escolas));
+
+        //pegar informação do local storage
+        let dados = localStorage.getItem("escolas2");
+        console.log(dados);
+
+        //pegar informação do local storage
+        let dados2="";
+        if(localStorage.getItem("escolas3")!=null)
+            dados2 = localStorage.getItem("escolas3");
+        console.log(dados2);
+        
+        let escola1={nome:"Feevale",enderco:"Av. Marício"};
+        let escola2={nome:"Santa",enderco:"General Osório"};
+        let escolas3=[];
+        escolas3.push(escola1);
+        escolas3.push(escola2);
+        localStorage.setItem("escolas3",JSON.stringify(escolas3));
+
+
+
+    </script>
+</body>
+</html>

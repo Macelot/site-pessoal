@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Salario</title>
+</head>
+<body>
+<fieldset>
+    <legend>Sálario</legend>
+<input type="text" name=""  id="salario">
+<br>
+    <legend>Digite sua idade</legend>
+<input type="text" name="" id="idade">
+<input type="button" value="ok" onclick="credito()">
+</fieldset>
+
+<script>
+    function credito() {
+        let idade_ = document.getElementById('idade').value; 
+        console.log(idade_);
+        
+        let salario_ = document.getElementById('salario').value;
+        console.log(salario_);
+
+        if  (salario_ <=5000 && idade_<=25) 
+            alert("Seu crédito é de 3000");
+
+        else {
+            (salario_>=5000 && idade_>=25)
+            alert("Seu crédito é de 10000");
+        } 
+        
+
+    }
+</script>
+</body>
+</html>

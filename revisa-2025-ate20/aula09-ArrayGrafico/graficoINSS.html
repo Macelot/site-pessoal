@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gráfico INSS (Valor Real - 2025)</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="container mt-5">
+        <h2>Imposto de INSS (Valor Real - 2025)</h2>
+        <canvas id="inssRealChart2025" width="400" height="200"></canvas>
+    </div>
+
+    <script>
+        const ctxInssReal2025 = document.getElementById('inssRealChart2025').getContext('2d');
+
+        // Tabela de INSS para empregados (Janeiro de 2025)
+        const aliquotasINSS2025 = [
+            { faixa: 1518.00, aliquota: 0.075, parcelaDeduzir: 0.00 },
+            { faixa: 2793.88, aliquota: 0.09, parcelaDeduzir: 22.77 },
+            { faixa: 4190.83, aliquota: 0.12, parcelaDeduzir: 106.59 },
+            { faixa: 8157.41, aliquota: 0.14, parcelaDeduzir: 190.40 }
+        ];
+
+        function calcularINSS2025(salario) {
+            let valorINSS = 0;
+
+            if (salario <= aliquotasINSS2025[0].faixa) {
+                valorINSS = salario * aliquotasINSS2025[0].aliquota;
+            } else if (salario <= aliquotasINSS2025[1].faixa) {
+                valorINSS = (salario * aliquotasINSS2025[1].aliquota) - aliquotasINSS2025[1].parcelaDeduzir;
+            } else if (salario <= aliquotasINSS2025[2].faixa) {
+                valorINSS = (salario * aliquotasINSS2025[2].aliquota) - aliquotasINSS2025[2].parcelaDeduzir;
+            } else if (salario <= aliquotasINSS2025[3].faixa) {
+                valorINSS = (salario * aliquotasINSS2025[3].aliquota) - aliquotasINSS2025[3].parcelaDeduzir;
+            } else {
+                // Para salários acima do teto, a contribuição é limitada ao teto
+                valorINSS = (aliquotasINSS2025[3].faixa * aliquotasINSS2025[3].aliquota) - aliquotasINSS2025[3].parcelaDeduzir;
+            }
+            return valorINSS;
+        }
+
+        const salarios2025 = [];
+        const valoresINSS2025 = [];
+        for (let salario = 1518; salario <= 10000; salario += 250) {
+            salarios2025.push(`R$ ${salario.toFixed(2)}`);
+            valoresINSS2025.push(calcularINSS2025(salario));
+        }
+
+        const inssRealChart2025 = new Chart(ctxInssReal2025, {
+            type: 'line',
+            data: {
+                labels: salarios2025,
+                datasets: [{
+                    label: 'Imposto INSS (R$)',
+                    data: valoresINSS2025,
+                    borderColor: 'rgba(102, 166, 54, 1)',
+                    borderWidth: 2,
+                    fill: false
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'Imposto INSS (R$)'
+                        }
+                    },
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Salário Bruto (R$)'
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>

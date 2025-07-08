@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <fieldset>
+        <legend>Digite sua idade</legend>
+        <input type="text" name="" id="idade">
+        <input type="button" value="ok" onclick="testa()">
+    </fieldset>
+
+    <hr>
+
+    <fieldset>
+        <legend>Digite sua idade</legend>
+        <input type="text" name="" id="idade2">
+        <input type="button" value="ok" onclick="testa2()">
+    </fieldset>
+
+    <script>
+        function testa(){
+            let idade_ = document.getElementById('idade').value;
+            console.log(idade_);
+            if(idade_>=18)
+                alert("Adulto");
+        }
+
+        function testa2(){
+            let idade_ = document.getElementById('idade2').value;
+            console.log(idade_);
+            if(idade_<18)
+                alert("Criança");
+            else if(idade_>=18 && idade_<60)
+                alert("Adulto");
+            else
+                alert("Idoso");
+        }
+    </script>
+</body>
+</html>

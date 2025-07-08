@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    Escolha o produto:<br>
+    <input type="radio" name="cor" id="A" onclick="ajustaProduto('camisa.jfif')">camisa<br>
+    <input type="radio" name="cor" id="B" onclick="ajustaProduto('calça.jfif')">calça<br>
+    <input type="radio" name="cor" id="V" onclick="ajustaProduto('casaco.jfif')">casaco<br>
+<hr>
+    Escolha o tamanho<br>
+    <input type="range" name="" id="" min="90" max="500" oninput="ajustaTam(this.value)">
+<hr>
+<img src="" alt="" id="produto" width="400px">
+
+<script>
+    function ajustaProduto(produto){
+        document.getElementById('produto').src=produto;
+    }
+    function ajustaTam(tam){
+        document.getElementById('produto').width=tam
+    }
+
+</script>
+</body>
+</html>

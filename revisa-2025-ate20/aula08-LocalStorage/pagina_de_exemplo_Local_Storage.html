@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <script src="https://kit.fontawesome.com/781b92b6d9.js" crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+
+    <style>
+        td {
+        height: 50px;
+        vertical-align: bottom;
+        }
+    </style>
+</head>
+<!-- Montar link whatsApp 
+    Ordenar por data de inserção  
+    Mensagens usando Modal centralizado
+    
+-->
+<body>
+    <form action="">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>Nome</th>
+                    <th>E-mail</th>
+                    <th>Telefone</th>
+                    <th>Operações</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><input type="text" name="" id="nome"></td>
+                    <td><input type="text" name="" id="emai"></td>
+                    <td><input type="text" name="" id="tele"></td>
+                    <td>
+                        <i class="fa-solid fa-user-plus" style="font-size:32px; color:darkgreen; cursor: pointer;" title="Adicionar Pessoa" id="btnAdicionar" onclick="adicionar()"></i>
+
+                        <i class="fa-solid fa-check" style="font-size:32px; color:rgb(18, 59, 244); cursor: pointer; visibility:hidden" title="Confirmar Pessoa" id="btnConfirmar" onclick="confirmar()"></i>
+
+                        <i class="fa-solid fa-arrows-rotate" style="font-size:32px; color:rgb(49, 53, 4); cursor: pointer;" title="Listar" id="btnListar" onclick="listar()"></i>
+      
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+    <input type="button" class="btn btn-danger btn-lg" value="Limpa Local Storage" onclick="limpa()">
+       
+    </form>
+    <div id="local">...</div>
+
+    <!-- Modal -->
+    <div class="modal" id="myModal">
+        <div class="modal-dialog">
+          <div class="modal-content">
+      
+            <!-- Modal Header -->
+            <div class="modal-header">
+              <h4 class="modal-title" id="ModalHeading"></h4>
+              <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+      
+            <!-- Modal body -->
+            <div class="modal-body">
+              <p id="ModalBody"></p>
+            </div>
+      
+            <!-- Modal footer -->
+            <div class="modal-footer">
+              <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+            </div>
+      
+          </div>
+        </div>
+      </div>
+
+  </div>
+ 
+    <script>
+
+        var $modal = $('#myModal');
+        $modal.on('click', '#paramsOkay', function(e) {
+            $modal.modal("hide");
+            $modal.on("hidden.bs.modal", function() {
+                console.log("Make me execute ONLY when Okay is clicked, please!");
+            });
+        });
+
+        function mostraModal1(){
+            //$(".myModal").modal();
+            $('#myModal').modal({ show: false})
+        }
+        function limpa(){
+            localStorage.clear();
+            listar();
+        }
+
+        $(document).ready(function() {
+            $('#tele').mask('(999)99999-9999');
+        });
+
+        //var pessoas = [];
+
+        if(localStorage.getItem('pessoas')!=null){
+			var pessoas=JSON.parse(localStorage.getItem('pessoas'));
+		}else{
+            var pessoas = [];
+            localStorage.setItem('pessoas', JSON.stringify(pessoas));
+        }
+
+        var idClicado;
+        var pessoa = new Object();
+        pessoa.nome = "Pessoa 1";
+        pessoa.emai = "pessoa1@gmail.com";
+        pessoa.tele = "51991697889";
+        pessoas.push(pessoa);
+        localStorage.setItem('pessoas', JSON.stringify(pessoas));
+
+        pessoa = new Object();
+        pessoa.nome = "Pessoa 2";
+        pessoa.emai = "pessoa3@gmail.com";
+        pessoa.tele = "51991697800";
+        pessoas.push(pessoa);
+        localStorage.setItem('pessoas', JSON.stringify(pessoas));
+
+        listar();
+
+        function adicionar(){
+            if(document.getElementById('nome').value == "" ){
+                //alert("Por favor digite o Nome");
+                var ModalHeading="Mensagem de Status";
+                var msg="Por favor digite o Nome";
+                mostra(ModalHeading,msg);
+                
+                return;
+            }
+            if(document.getElementById('tele').value == "" ){
+                //alert("Por favor digite o Telefone");
+                var ModalHeading="Mensagem de Status";
+                var msg="Por favor digite o Telefone";
+                mostra(ModalHeading,msg);
+                document.getElementById("tele").focus();
+                return;
+            }
+            if(busca(document.getElementById('nome').value)==1){
+                //alert("Este usuário já foi cadastrado");
+                var ModalHeading="Mensagem de Status";
+                var msg="Este usuário já foi cadastrado";
+                mostra(ModalHeading,msg);
+                return;     
+            }
+
+            var pessoa = new Object();
+            pessoa.nome = document.getElementById('nome').value;
+            pessoa.emai = document.getElementById('emai').value;
+            pessoa.tele = document.getElementById('tele').value;
+            pessoas.push(pessoa);
+            localStorage.setItem('pessoas', JSON.stringify(pessoas));
+            listar();
+            document.getElementById('nome').value="";
+            document.getElementById('emai').value="";
+            document.getElementById('tele').value="";
+        }
+        function listar(){
+            if(localStorage.getItem('pessoas')!=null){
+                var pessoas=JSON.parse(localStorage.getItem('pessoas'));
+            }else{
+                var pessoas = [];
+                localStorage.setItem('pessoas', JSON.stringify(pessoas));
+            }
+            var dados = document.getElementById('local').innerHTML="";
+            var conteudo = "<table class='table table-hover'>";
+                conteudo += "<thead>";
+                conteudo += "<tr>";
+                conteudo += "<th>Nome</th>";
+                conteudo += "<th>E-mail</th>";
+                conteudo += "<th>Telefone</th>";
+                conteudo += "<th>Operações</th>";
+                conteudo += "</tr>";
+                conteudo += "</thead>";
+                conteudo += "<tbody>";
+            for (let index = 0; index < pessoas.length; index++) {
+                const element = pessoas[index];
+                conteudo+="<tr>";
+                conteudo+="<td>"+element.nome+"</td>";
+                conteudo+="<td>"+element.emai+"</td>";
+                conteudo+="<td>"+element.tele+"</td>";
+                conteudo+='<td valign="center">';
+                conteudo+='&nbsp;&nbsp;&nbsp;<i onclick="whats('+index+')" style="font-size:32px;color: #25d366;" class="fa-brands fa-whatsapp"></i>';
+                conteudo+='&nbsp;&nbsp;&nbsp;<i onclick="apagar('+index+')" style="font-size:32px;color: #e1230e;" class="fa-solid fa-trash" ></i>';
+                conteudo+='&nbsp;&nbsp;&nbsp;<i onclick="editar('+index+')" style="font-size:32px;color: #c0bb30;" class="fa-regular fa-pen-to-square" ></i>';
+                conteudo+="</td></tr>";
+            }
+            conteudo += "</tbody>";
+            conteudo += "</table>";
+            document.getElementById('local').innerHTML=conteudo;
+        }
+        function apagar(id){
+            console.log(id);
+            if(confirm("Tem certeza?")){
+                pessoas.splice(id,1);
+                localStorage.setItem('pessoas', JSON.stringify(pessoas));
+            }
+            listar();    
+        }
+        function editar(id){
+            pessoas=JSON.parse(localStorage.getItem('pessoas'));
+            var pessoa = pessoas[id];
+            idClicado = id;
+            document.getElementById('nome').value = pessoa.nome; 
+            document.getElementById('emai').value = pessoa.emai; 
+            document.getElementById('tele').value = pessoa.tele;
+            document.getElementById('btnAdicionar').disabled=true;
+            document.getElementById('btnConfirmar').style.visibility="visible";
+            document.getElementById('btnAdicionar').style.visibility="hidden";
+        }
+        function confirmar(){
+            var pessoa = new Object();
+            pessoa.nome = document.getElementById('nome').value;
+            pessoa.emai = document.getElementById('emai').value;
+            pessoa.tele = document.getElementById('tele').value;
+            pessoas[idClicado] = pessoa;
+            localStorage.setItem('pessoas', JSON.stringify(pessoas));
+            listar();
+            document.getElementById('nome').value = ""; 
+            document.getElementById('emai').value = ""; 
+            document.getElementById('tele').value = "";
+            document.getElementById('btnAdicionar').disabled=false;
+            document.getElementById('btnAdicionar').style.visibility="visible";
+            document.getElementById('btnConfirmar').style.visibility="hidden";
+        }
+        function whats(idPessoa){
+            var quem;
+            quem = pessoas[idPessoa];
+            console.log(quem);
+            //limpar parênteses e hifen
+            quem.tele = quem.tele.replace("-","");
+            quem.tele = quem.tele.replace("(","");
+            quem.tele = quem.tele.replace(")","");
+            console.log(quem);
+
+            var url;
+            if( quem.tele.substring(0, 2)=="55")
+                url = "http://wa.me/"+quem.tele;
+            else
+                url = "http://wa.me/55"+quem.tele;
+            console.log(url); 
+
+            window.open(url);
+        }
+        function busca(nome){
+            pessoas=JSON.parse(localStorage.getItem('pessoas'));
+            for (let index = 0; index < pessoas.length; index++) {
+                const element = pessoas[index];
+                if(element.nome == nome){
+                    return "1";
+                }
+            }
+            return "0";
+        }
+        function mostra(ModalHeading,msg){
+          var modal1 = new bootstrap.Modal(document.getElementById('myModal')); 
+          document.getElementById('ModalHeading').innerHTML = ModalHeading;
+          document.getElementById('ModalBody').innerHTML = msg;
+          
+          modal1.toggle(); 
+          // Toggle the modal again after 3 seconds 
+        //   setTimeout(() => { 
+        //         modal1.toggle(); 
+        //     }, 2000) 
+
+        }
+    </script>
+</body>
+</html>

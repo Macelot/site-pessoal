@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gráfico Exponencial (INSS)</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="container mt-5">
+        <h2>Imposto Crescente com valor monetário</h2>
+        <canvas id="exponentialChart" width="400" height="200"></canvas>
+    </div>
+
+    <script>
+        const ctxExponential = document.getElementById('exponentialChart').getContext('2d');
+        const exponentialChart = new Chart(ctxExponential, {
+            type: 'line',
+            data: {
+                labels: ['R$ 1.000', 'R$ 2.000', 'R$ 3.000', 'R$ 4.000', 'R$ 5.000'],
+                datasets: [{
+                    label: 'Imposto (R$)',
+                    data: [50, 120, 210, 320, 450], // Imposto aumenta de forma não linear (simulando crescimento)
+                    borderColor: 'rgba(255, 99, 132, 1)',
+                    borderWidth: 2,
+                    fill: false
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'Imposto (R$)'
+                        }
+                    },
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Valor monetário (R$)'
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>

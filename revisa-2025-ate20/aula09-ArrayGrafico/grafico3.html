@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gráfico Exponencial (Desconto)</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="container mt-5">
+        <h2>Valor Total da Compra com Desconto Progressivo</h2>
+        <canvas id="discountChart" width="400" height="200"></canvas>
+    </div>
+
+    <script>
+        const ctxDiscount = document.getElementById('discountChart').getContext('2d');
+        const discountChart = new Chart(ctxDiscount, {
+            type: 'line',
+            data: {
+                labels: ['1 item', '2 itens', '3 itens', '4 itens', '5 itens'],
+                datasets: [{
+                    label: 'Valor Total (R$)',
+                    data: [100, 190, 270, 340, 400], // Valor total aumenta menos que proporcionalmente
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    borderWidth: 2,
+                    fill: false
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'Valor Total (R$)'
+                        }
+                    },
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Quantidade de Itens'
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
